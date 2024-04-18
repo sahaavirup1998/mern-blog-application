@@ -114,4 +114,15 @@ export const getusers = async (req, res, next) => {
   } catch (error) {
     next(error);
   }
-}
+};
+
+export const getUser = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.userId);
+    if(!user) {
+      return next(errorHandeler(404, "User not found!"));
+    }
+  } catch (error) {
+    next(error);
+  }
+};

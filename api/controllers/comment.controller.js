@@ -1,12 +1,14 @@
 import Comment from "../models/comment.model.js";
+// import { errorHandeler } from "../utils/error.js";
 
+// create a comment functionality
 export const createComment = async (req, res, next) => {
   try {
     const { content, postId, userId } = req.body;
 
     if (userId !== req.user.id) {
       return next(
-        errorHandeler(403, "You are not allowed to create this comment")
+        errorHandeler(403, 'You are not allowed to create this comment')
       );
     }
 
@@ -22,3 +24,15 @@ export const createComment = async (req, res, next) => {
     next(error);
   }
 };
+
+// get all the comment functionality
+export const getPostComments = async (req, res, next) => {
+  try {
+    const comments = await Comment.find({postId: req.params.postId}).sort({
+      createdAt: -1,
+    });
+    res.status(200).json(comments);
+  } catch (error) {
+    next(error);
+  }
+}
